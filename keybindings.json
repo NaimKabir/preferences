@@ -1,0 +1,6 @@
+// VS Code: Place your key bindings in this file to override the defaults
+[
+    // create a new file in place with macOS cmd-N when in the Explorer
+    { "key": "cmd+n", "command": "explorer.newFile", "when": "explorerViewletFocus" }
+]
+
