@@ -10,10 +10,6 @@ nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
 " Swapping out window close command
 nnoremap <C-C> <C-W>c
-" Swapping out split screen horizontal
-nnoremap <C-V> <C-W>v
-" Swapping out split screen vertical
-nnoremap <C-S> <C-W>s
 
 " Enabling unix startup script
 
@@ -40,4 +36,8 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
-colorscheme koehler
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+colorscheme anderson
