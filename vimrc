@@ -1,5 +1,7 @@
 " Enable syntax highlighting
 syntax enable
+" Enable line numbers
+set number
 
 " Swap out window navigation commands with Mac friendly ones.
 " Swapping ctrl-W prepends for window down/up/left/right with
