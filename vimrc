@@ -3,6 +3,11 @@ syntax enable
 " Enable line numbers
 set number
 
+" KEYBIND SWAPS
+
+" Map Esc-Esc to clearing highlights
+nnoremap <esc><esc> :noh<return>
+
 " Swap out window navigation commands with Mac friendly ones.
 " Swapping ctrl-W prepends for window down/up/left/right with
 " raw ctrl-J, ctrl-K, etc. 
