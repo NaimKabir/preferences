@@ -2,6 +2,13 @@
 syntax enable
 " Enable line numbers
 set number
+" Setting backup and swap dirs to be vimtmp.
+" The double-/ means that files will be stored with fully qualified path
+" (in case the files have the same name). The `,.` allows vim to use current
+" dir if vimtmp doesn't exist.
+set backupdir=~/vimtmp//,.
+set directory=~/vimtmp//,.
+set undodir=~/.vim/undo//,.
 
 " KEYBIND SWAPS
 

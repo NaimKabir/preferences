@@ -15,6 +15,10 @@ rm -f $TARGET_TMUX_CONF
 rm -rf $TARGET_VIM_FOLDER
 rm -f $TARGET_VIMRC
 
+# Creating dirs
+
+mkdir -p ~/vimtmp # creating a place for vim to store backups/swaps/undos
+
 # Symlinks
 
 echo "ln -s $REPO_PATH/tmux.conf $TARGET_TMUX_CONF"
