@@ -15,6 +15,10 @@ set undodir=~/.vim/undo//,.
 " Map Esc-Esc to clearing highlights
 nnoremap <esc><esc> :noh<return>
 
+" Map <C-P> to find files in tree. This overrides a default command
+" that's the same as 'k', so no worries.
+nnoremap <C-P> :NERDTreeFind<CR>
+
 " Swap out window navigation commands with Mac friendly ones.
 " Swapping ctrl-W prepends for window down/up/left/right with
 " raw ctrl-J, ctrl-K, etc. 
@@ -45,13 +49,17 @@ else
   endif
 endif
 
+" Start NERDTree. If a file is specified, move the cursor to its window.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+colorscheme pablo
+
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
   set hlsearch
 endif
 
-" Start NERDTree. If a file is specified, move the cursor to its window.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-
-colorscheme anderson
+if has("gui_running")
+  colorscheme anderson
+endif
