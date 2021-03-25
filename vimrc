@@ -29,6 +29,13 @@ nnoremap <C-H> <C-W>h
 " Swapping out window close command
 nnoremap <C-C> <C-W>c
 
+" Window resize commands with arrow keys
+nnoremap <Up> :res +1<CR>
+nnoremap <Down> :res -1<CR>
+nnoremap <Left> :vertical res +1<CR>
+nnoremap <Right> :vertical res -1<CR>
+
+
 " Enabling unix startup script
 
 " When started as "evim", evim.vim will already have done these settings, bail
@@ -52,6 +59,9 @@ endif
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+
+" Auto-format Python files using Black
+autocmd BufWritePre *.py Black
 
 colorscheme pablo
 

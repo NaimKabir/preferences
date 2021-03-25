@@ -7,3 +7,6 @@
 [submodule "vim/pack/plugins/start/lean"]
 	path = vim/pack/plugins/start/lean
 	url = https://github.com/leanprover/lean.vim.git
+[submodule "vim/pack/plugins/start/black"]
+	path = vim/pack/plugins/start/black
+	url = https://github.com/psf/black.git
