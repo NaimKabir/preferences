@@ -35,6 +35,8 @@ nnoremap <Down> :res -1<CR>
 nnoremap <Left> :vertical res +1<CR>
 nnoremap <Right> :vertical res -1<CR>
 
+" Setting black line length default to 120
+let g:black_linelength = 120
 
 " Enabling unix startup script
 
