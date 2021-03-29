@@ -8,7 +8,7 @@ set number
 " dir if vimtmp doesn't exist.
 set backupdir=~/vimtmp//,.
 set directory=~/vimtmp//,.
-set undodir=~/.vim/undo//,.
+set undodir=~/vimtmp//,.
 
 " KEYBIND SWAPS
 
