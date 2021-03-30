@@ -35,6 +35,9 @@ nnoremap <Down> :res -1<CR>
 nnoremap <Left> :vertical res +1<CR>
 nnoremap <Right> :vertical res -1<CR>
 
+" Replace ESC with jk in Insert mode
+inoremap jk <Esc>
+
 
 " Enabling unix startup script
 
