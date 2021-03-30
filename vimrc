@@ -65,13 +65,10 @@ autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | e
 " Auto-format Python files using Black
 autocmd BufWritePre *.py Black
 
-colorscheme pablo
+colorscheme desert
 
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
   set hlsearch
 endif
 
-if has("gui_running")
-  colorscheme anderson
-endif
