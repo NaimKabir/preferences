@@ -64,8 +64,6 @@ endif
 " Auto-format Python files using Black
 autocmd BufWritePre *.py Black
 
-colorscheme delek
-
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
   set hlsearch
