@@ -38,9 +38,6 @@ nnoremap <Right> :vertical res -1<CR>
 " Replace ESC with jk in Insert mode
 inoremap jk <Esc>
 
-" Setting black line length default to 120
-let g:black_linelength = 120
-
 " Enabling unix startup script
 
 " When started as "evim", evim.vim will already have done these settings, bail
@@ -60,9 +57,6 @@ else
     set undofile	" keep an undo file (undo changes after closing)
   endif
 endif
-
-" Auto-format Python files using Black
-autocmd BufWritePre *.py Black
 
 if &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
