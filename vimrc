@@ -1,7 +1,7 @@
 " Enable syntax highlighting
 syntax enable
 " Enable line numbers
-set number
+set relativenumber
 " Setting backup and swap dirs to be vimtmp.
 " The double-/ means that files will be stored with fully qualified path
 " (in case the files have the same name). The `,.` allows vim to use current
@@ -26,6 +26,9 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
+" Swap the window switch command
+nnoremap <C-Space> <C-W>x
+nnoremap <C-@> <C-W>x
 " Swapping out window close command
 nnoremap <C-C> <C-W>c
 
@@ -47,7 +50,9 @@ if v:progname =~? "evim"
 endif
 
 " Get the defaults that most users want.
-source $VIMRUNTIME/defaults.vim
+if !has('nvim')
+  source $VIMRUNTIME/defaults.vim
+endif
 
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
@@ -58,7 +63,7 @@ else
   endif
 endif
 
-if &t_Co > 2 || has("gui_running")
+if has('nvim') || &t_Co > 2 || has("gui_running")
   " Switch on highlighting the last used search pattern.
   set hlsearch
 endif
