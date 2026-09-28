@@ -10,3 +10,24 @@
 [submodule "vim/pack/plugins/start/black"]
 	path = vim/pack/plugins/start/black
 	url = https://github.com/psf/black.git
+[submodule "nvim/plugins/nvim-tree"]
+	path = nvim/plugins/nvim-tree
+	url = https://github.com/nvim-tree/nvim-tree.lua.git
+[submodule "nvim/plugins/plenary"]
+	path = nvim/plugins/plenary
+	url = https://github.com/nvim-lua/plenary.nvim.git
+[submodule "nvim/plugins/diffview"]
+	path = nvim/plugins/diffview
+	url = https://github.com/sindrets/diffview.nvim.git
+[submodule "nvim/plugins/nightfox"]
+	path = nvim/plugins/nightfox
+	url = https://github.com/EdenEast/nightfox.nvim.git
+[submodule "nvim/plugins/github-theme"]
+	path = nvim/plugins/github-theme
+	url = https://github.com/projekt0n/github-nvim-theme.git
+[submodule "nvim/plugins/tree-sitter-tlaplus"]
+	path = nvim/plugins/tree-sitter-tlaplus
+	url = https://github.com/tlaplus-community/tree-sitter-tlaplus.git
+[submodule "nvim/plugins/tlaplus-symbols"]
+	path = nvim/plugins/tlaplus-symbols
+	url = https://github.com/tlaplus-community/tlaplus-nvim-plugin.git
