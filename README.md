@@ -136,9 +136,10 @@ Inside the tree:
 
 ### Narrowing the tree to a few files
 
-The tree follows Neovim's argument list. Launch with `nvim .` and every file
-shows, because a directory argument keeps its whole subtree visible. When you
-want to focus on a handful of files, name them:
+The tree follows Neovim's argument list. Launching on a directory, as in
+`nvim .`, shows every file: the tree takes over that directory buffer, so the
+list is effectively empty. When you want to focus on a handful of files, name
+them:
 
 ```vim
 :args src/server.lua src/routes.lua
@@ -146,7 +147,8 @@ want to focus on a handful of files, name them:
 
 The tree redraws to show only those files and the folders leading to them.
 Everything else is hidden, not deleted, and the buffers you already have open
-are untouched. `:args` accepts globs such as `src/**/*_test.lua`.
+are untouched. `:args` accepts globs such as `src/**/*_test.lua`, and a
+directory argument keeps its whole subtree visible.
 
 | Key / command | Action |
 | --- | --- |
