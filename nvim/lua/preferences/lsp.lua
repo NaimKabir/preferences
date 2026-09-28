@@ -33,18 +33,20 @@ vim.lsp.config('preferences_python', {
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('PreferencesLsp', { clear = true }),
   callback = function(event)
-    local function map(key, action, description)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    local function map(key, action, description, method)
+      if method and not client:supports_method(method) then return end
       vim.keymap.set('n', key, action, { buffer = event.buf, desc = description })
     end
-    map('gd', vim.lsp.buf.definition, 'Go to definition')
-    map('grr', vim.lsp.buf.references, 'Find references')
-    map('gri', vim.lsp.buf.implementation, 'Find implementations')
-    map('grt', vim.lsp.buf.type_definition, 'Go to type definition')
-    map('grn', vim.lsp.buf.rename, 'Rename symbol')
-    map('gra', vim.lsp.buf.code_action, 'Code actions')
-    map('K', vim.lsp.buf.hover, 'Documentation and type')
-    map('<leader>ci', vim.lsp.buf.incoming_calls, 'Find callers')
-    map('<leader>co', vim.lsp.buf.outgoing_calls, 'Find called functions')
+    map('gd', vim.lsp.buf.definition, 'Go to definition', 'textDocument/definition')
+    map('grr', vim.lsp.buf.references, 'Find references', 'textDocument/references')
+    map('gri', vim.lsp.buf.implementation, 'Find implementations', 'textDocument/implementation')
+    map('grt', vim.lsp.buf.type_definition, 'Go to type definition', 'textDocument/typeDefinition')
+    map('grn', vim.lsp.buf.rename, 'Rename symbol', 'textDocument/rename')
+    map('gra', vim.lsp.buf.code_action, 'Code actions', 'textDocument/codeAction')
+    map('K', vim.lsp.buf.hover, 'Documentation and type', 'textDocument/hover')
+    map('<leader>ci', vim.lsp.buf.incoming_calls, 'Find callers', 'textDocument/prepareCallHierarchy')
+    map('<leader>co', vim.lsp.buf.outgoing_calls, 'Find called functions', 'textDocument/prepareCallHierarchy')
     map('<leader>e', vim.diagnostic.open_float, 'Show diagnostic')
   end,
 })

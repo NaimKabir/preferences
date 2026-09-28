@@ -24,7 +24,9 @@ git -C "$REPO_PATH" submodule update --init --recursive -- \
   nvim/plugins/nvim-tree \
   nvim/plugins/plenary \
   nvim/plugins/diffview \
-  nvim/plugins/nightfox
+  nvim/plugins/nightfox \
+  nvim/plugins/github-theme \
+  nvim/plugins/tlaplus-symbols
 
 BLACK_ENV="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/preferences-black"
 python3 -m venv "$BLACK_ENV"

@@ -22,3 +22,12 @@
 [submodule "nvim/plugins/nightfox"]
 	path = nvim/plugins/nightfox
 	url = https://github.com/EdenEast/nightfox.nvim.git
+[submodule "nvim/plugins/github-theme"]
+	path = nvim/plugins/github-theme
+	url = https://github.com/projekt0n/github-nvim-theme.git
+[submodule "nvim/plugins/tree-sitter-tlaplus"]
+	path = nvim/plugins/tree-sitter-tlaplus
+	url = https://github.com/tlaplus-community/tree-sitter-tlaplus.git
+[submodule "nvim/plugins/tlaplus-symbols"]
+	path = nvim/plugins/tlaplus-symbols
+	url = https://github.com/tlaplus-community/tlaplus-nvim-plugin.git

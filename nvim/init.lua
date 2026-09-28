@@ -6,7 +6,7 @@ local repo = vim.fn.fnamemodify(init, ':h:h')
 for _, plugin in ipairs({ 'airline', 'lean' }) do
   vim.opt.runtimepath:prepend(repo .. '/vim/pack/plugins/start/' .. plugin)
 end
-for _, plugin in ipairs({ 'plenary', 'nvim-tree', 'diffview', 'nightfox' }) do
+for _, plugin in ipairs({ 'plenary', 'nvim-tree', 'diffview', 'nightfox', 'github-theme' }) do
   vim.opt.runtimepath:prepend(repo .. '/nvim/plugins/' .. plugin)
 end
 vim.g.loaded_netrw = 1
@@ -19,9 +19,16 @@ vim.opt.mouse = 'a'
 vim.opt.ttimeoutlen = 100
 vim.opt.termguicolors = true
 vim.opt.laststatus = 2
-vim.cmd.colorscheme('dayfox')
+vim.cmd.colorscheme('github_light_default')
 vim.keymap.set({ 'n', 'x' }, 'Q', 'gq')
 vim.keymap.set('i', '<C-U>', '<C-G>u<C-U>')
+-- Quickfix history: q (left) steps toward newer lists, w (right) toward older.
+vim.keymap.set('n', '<leader>qq', '<Cmd>cnewer<CR>', { desc = 'Newer quickfix list' })
+vim.keymap.set('n', '<leader>qw', '<Cmd>colder<CR>', { desc = 'Older quickfix list' })
+vim.keymap.set('n', '<leader>qo', function()
+  local open = vim.iter(vim.fn.getwininfo()):any(function(w) return w.quickfix == 1 end)
+  vim.cmd(open and 'cclose' or 'copen')
+end, { desc = 'Toggle quickfix window' })
 vim.cmd('filetype plugin indent on')
 vim.cmd('syntax enable')
 
@@ -96,4 +103,5 @@ vim.api.nvim_create_user_command('Prettier', function()
 end, { desc = 'Format the current buffer with Prettier' })
 
 require('preferences.lsp')
+require('preferences.tlaplus')
 require('preferences.git')

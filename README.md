@@ -59,7 +59,7 @@ change your Vim or other application configs.
 Edit `vimrc` for shared settings and mappings; edit `nvim/init.lua` for
 Neovim-specific behavior. Relative line numbers, syntax highlighting, search
 highlighting, backup files, and persistent undo are enabled. Neovim uses the
-Dayfox (Nightfox's light variant) with true color enabled and restores the last cursor position when reopening
+GitHub Light Default (`github_light_default`) with true color enabled and restores the last cursor position when reopening
 files.
 
 | Key / command | Action |
@@ -73,6 +73,8 @@ files.
 | Up / Down | Grow / shrink split height |
 | Left / Right | Grow / shrink split width |
 | `\n` / `:NvimTreeToggle` | Toggle file tree |
+| `\qo`, `\qq`, `\qw` | Quickfix window and history, see [Quickfix lists](#quickfix-lists) |
+| `\aa`, `\ac` | Narrow the file tree via the arglist, see [Narrowing the tree](#narrowing-the-tree-to-a-few-files) |
 | `:Black` | Format current Python buffer, without saving |
 | `:Prettier` | Format current JavaScript/TypeScript buffer (including JSX/TSX), without saving |
 
@@ -100,6 +102,8 @@ Neovim honors `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, and `XDG_STATE_HOME`. Defaults
 - Language servers: `~/.local/share/nvim/preferences-lsp`.
 - Backups, swap, undo: separate directories under `~/.local/state/nvim`.
 
+After editing the config, `:source $MYVIMRC` reloads it in a running Neovim;
+new mappings take effect immediately, while plugin changes may need a restart.
 Use the default `NVIM_APPNAME` (`nvim`) with this setup. Terminals or macOS input
 shortcuts may intercept Ctrl-Space; Ctrl-@ is mapped to the same action.
 
@@ -128,6 +132,31 @@ Inside the tree:
 | `I` | Toggle showing Git-ignored files |
 | `q` | Close tree |
 | `g?` | Show all tree mappings |
+| `U` | Temporarily toggle the arglist filter described below |
+
+### Narrowing the tree to a few files
+
+The tree follows Neovim's argument list. Launch with `nvim .` and every file
+shows, because a directory argument keeps its whole subtree visible. When you
+want to focus on a handful of files, name them:
+
+```vim
+:args src/server.lua src/routes.lua
+```
+
+The tree redraws to show only those files and the folders leading to them.
+Everything else is hidden, not deleted, and the buffers you already have open
+are untouched. `:args` accepts globs such as `src/**/*_test.lua`.
+
+| Key / command | Action |
+| --- | --- |
+| `\aa` / `:argadd %` | Add the current file to the arglist, so it appears in the tree |
+| `\ac` / `:%argdelete` | Clear the arglist and show the whole tree again |
+| `:args` | List what is currently on the arglist |
+| `U` in the tree | Peek at hidden files without changing the arglist |
+
+The arglist is per window by default, so a narrowed tree reflects the window
+you last ran `:args` from. `:argglobal` puts a window back on the shared list.
 
 To inspect changes with Diffview:
 
@@ -139,7 +168,12 @@ To inspect changes with Diffview:
 | `\gq` / `:DiffviewClose` | Close diff view and return to editing |
 
 In Diffview, select a file in the panel and press Enter to see its before/after
-diff. Tab / Shift-Tab cycle files, and `]c` / `[c` jump between diff hunks. Press
+diff. Tab / Shift-Tab cycle files, and `]c` / `[c` jump between diff hunks.
+Unchanged context is shown in full rather than folded away; press `zi` in a
+diff window to fold it again for that window. To compare branches the way a
+GitHub pull request does, use the three-dot form, which diffs against the
+merge base: `:DiffviewOpen origin/main...HEAD`. Branch names are resolved when
+the view opens, so after a rebase close and reopen it rather than refreshing. Press
 `q` in a diff or file panel to close the whole Diffview tab, or `g?` for its help.
 Use your Ctrl-H/J/K/L mappings to move between panes. Diffview includes staging
 and conflict-resolution actions in its help; simply opening it does not stage
@@ -149,6 +183,26 @@ last commit, including staged edits. Run it from the project you want to inspect
 The `\` keys use the default leader (backslash). Configuration lives in
 `nvim/lua/preferences/git.lua`. Run `./scripts/check-git.sh` to verify tree status
 and actual diff contents against a disposable Git repository.
+
+## Quickfix lists
+
+Search results, diagnostics, and LSP references land in the quickfix list.
+Neovim keeps the last ten lists, so an earlier search is never lost when a new
+one replaces it. These bindings cover opening the window and moving through
+that history; the bracket keys are Neovim defaults, listed here for completeness.
+
+| Key / command | Action |
+| --- | --- |
+| `\qo` | Toggle the quickfix window |
+| `\qq` / `:cnewer` | Switch to the next newer quickfix list |
+| `\qw` / `:colder` | Switch to the next older quickfix list |
+| `]q` / `[q` | Next / previous entry in the current list |
+| `]Q` / `[Q` | Last / first entry in the current list |
+| `:chistory` | Show the list history and which one is active |
+
+`q` and `w` sit side by side on the keyboard: the left key moves toward newer
+lists, the right key toward older ones. Both stop with a message at either end
+of the history. Quickfix bindings live in `nvim/init.lua`.
 
 ## Definitions, references, and callers
 
@@ -185,8 +239,8 @@ Servers start automatically for matching files. Put the cursor on a symbol:
 
 The `\` bindings use Vim's default leader key; type backslash, then `c`, then
 `i` for callers. If you set `mapleader`, use that key instead. Multiple results
-appear in the quickfix list: `:copen` opens it, Enter jumps to an item, and
-`:cnext` / `:cprev` move through results. Existing Ctrl-Space window exchange
+appear in the quickfix list: `\qo` opens it, Enter jumps to an item, and
+`]q` / `[q` move through results (see [Quickfix lists](#quickfix-lists)). Existing Ctrl-Space window exchange
 and split-navigation mappings are preserved.
 
 For accurate results:
@@ -210,6 +264,68 @@ live integration check of cross-file definitions, references, and incoming calls
 in both languages. Server configuration and bindings live in
 `nvim/lua/preferences/lsp.lua`. Other languages need their own server/config;
 Lean remains syntax/indentation-only.
+
+## TLA+ and PlusCal (optional)
+
+TLA+ is the specification language; **TLC** is its model checker. This setup adds
+Tree-sitter syntax highlighting for TLA+ and embedded PlusCal, and the official
+**TLAPS `tlapm_lsp`** language server for `.tla` files.
+
+The [TLA+ Unicode input plugin](https://github.com/tlaplus-community/tlaplus-nvim-plugin)
+is also installed and enabled. In insert mode in a `.tla` buffer, typing `\A`,
+`\leq`, or `<=>` inserts `∀`, `≤`, or `⇔`. This changes the actual buffer text,
+including what gets saved; it is separate from syntax highlighting and the LSP.
+Type each sequence without a long pause. Mappings apply only to `.tla` buffers.
+
+- `:TlaMappingsRemove` turns off conversion in the current buffer.
+- `:TlaMappingsAdd` turns it back on in the current buffer.
+- `:TlaMappingsDisable` disables automatic setup for subsequently opened files;
+  use `:TlaMappingsRemove` as well for a buffer already open.
+- `:TlaMappingsEnable` restores automatic setup for subsequently opened files.
+
+Restart Neovim after installing this plugin. Both installers below initialize
+its pinned submodule; `setup-neovim.sh` alone installs symbol input without the
+optional parser/server download.
+
+After the regular Neovim install, run:
+
+```sh
+# macOS: install Apple's command-line tools if cc is missing:
+xcode-select --install
+# Debian/Ubuntu alternative: sudo apt-get install build-essential curl
+./setup-tlaplus.sh
+./scripts/check-tlaplus.sh
+```
+
+Skip `xcode-select --install` if command-line tools are already installed. The
+script compiles the parser from a pinned Git submodule and installs the server
+under `~/.local/share/nvim/preferences-tlaplus` (honoring `XDG_DATA_HOME`). It does
+not require Java, npm packages, or a Tree-sitter plugin manager.
+
+The first server install downloads the official **1.6.0 rolling prerelease**
+archive (~1 GB), extracting only binaries and standard modules. Later runs reuse
+the installed server. Unlike the pinned syntax grammar, that upstream archive
+changes over time; its reported version is recorded in `installed-version.txt`
+inside the installation directory. `TLAPM_ARCHIVE=/path/to/archive.tar.gz
+./setup-tlaplus.sh` can reuse a previously downloaded archive for the same platform.
+Prebuilt servers are available for Apple Silicon macOS and x86-64 Linux.
+On other platforms, [build TLAPS from source](https://github.com/tlaplus/tlapm/blob/main/DEVELOPING.md)
+and keep `TLAPM_LSP=/absolute/path/to/tlapm_lsp` exported both during setup and when
+launching Neovim (or put `tlapm_lsp` on PATH).
+
+Restart Neovim and open a `.tla` file: highlighting and the server start
+automatically. `:checkhealth vim.lsp` shows `preferences_tlaplus`. Syntax errors
+appear as diagnostics; `\e` shows details. `gra` lists available proof-editing
+code actions, and `grn` supports proof-step renaming.
+
+**Capabilities differ from Python/TypeScript:** this server is proof-oriented;
+it does not provide go-to-definition, references, hover, or call hierarchy.
+The installer does not include backend provers needed to execute proof-checking
+actions, nor does it run TLC model checking. Use a full TLAPS installation for
+proof checking and the separate [TLA+ tools](https://github.com/tlaplus/tlaplus)
+for TLC. Running a model checker automatically on each edit is not configured.
+Configuration lives in `nvim/lua/preferences/tlaplus.lua`; `moduleSearchPaths`
+can be set there for imported modules outside the project/standard library.
 
 ## Verify, update, or remove
 
