@@ -32,6 +32,22 @@ local ok, err = pcall(function()
     return text:match('M%s+modified.txt') and text:match('S%s+staged.txt') and text:match('%?%s+untracked.txt')
   end, 100), 'Tree did not display modified/staged/untracked status')
   assert(vim.fn.maparg('s', 'n', false, true).desc == 'Open in vertical split', 'Tree split mapping')
+  -- Arglist narrowing: real args hide siblings; a hijacked-buffer name hides nothing.
+  local function visible()
+    local names = {}
+    for _, node in ipairs(require('nvim-tree.core').get_explorer().nodes) do
+      names[#names + 1] = node.name
+    end
+    table.sort(names)
+    return table.concat(names, ' ')
+  end
+  vim.cmd('args staged.txt')
+  tree.tree.reload()
+  assert(visible() == 'staged.txt', 'Arglist did not narrow tree: ' .. visible())
+  vim.cmd('%argdelete | args NvimTree_1')
+  tree.tree.reload()
+  assert(visible() == '.git modified.txt staged.txt untracked.txt', 'Stale arglist entry hid files: ' .. visible())
+  vim.cmd('%argdelete')
   tree.tree.close()
   vim.cmd.DiffviewOpen()
   assert(vim.wait(10000, function()
